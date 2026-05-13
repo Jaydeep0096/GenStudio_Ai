@@ -32,7 +32,6 @@ const Dashbord = () => {
       }else{
         toast.error(data.message)
       }
-      console.log("DASHBOARD DATA:", data);
     } catch (error) {
       toast.error(error.message)
     }

@@ -35,7 +35,8 @@ const BlogTitle = () => {
       
       console.log(prompt);
       const {data} = await axios.post("/api/ai/generate-blog-title", {prompt},{headers : {Authorization : `Bearer ${await getToken()}`}})
-console.log("BLOG RESPONSE:", data);
+      
+      console.log("BLOG RESPONSE:", data);
       if(data.success){
         setContent(data.content);
       }else{
@@ -44,8 +45,6 @@ console.log("BLOG RESPONSE:", data);
      } catch (error) {
         toast.error(error.message)
      }
-     
-     
       setLoading(false);
     }
 
