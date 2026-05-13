@@ -14,8 +14,11 @@ export default function Footer() {
             <footer className="px-6 md:px-16 lg:px-24 xl:px-32 w-full text-sm text-slate-500 bg-white pt-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14">
                     <div className="sm:col-span-2 lg:col-span-1">
-                        <img src={assets.logo}/>
-                        <p className="text-sm/7 mt-6">Jd.AI is an all-in-one AI platform that helps you create content faster and smarter.
+                        <div className='flex items-center gap-1 cursor-pointer'>
+                                  <img src={assets.logo} alt="logo" className='w-10 h-10 object-contain sm:w-44'/>
+                                  <h3 className='text-2xl font-bold hover:text-primary/70 text-primary'>GenStudio.ai</h3>
+                        </div>
+                        <p className="text-sm/7 mt-6">GenStudio.ai is an all-in-one AI platform that helps you create content faster and smarter.
 From writing articles and generating images to removing backgrounds and reviewing resumes — everything powered by AI.</p>
                     </div>
                     <div className="flex flex-col lg:items-center lg:justify-center">
@@ -39,7 +42,7 @@ From writing articles and generating images to removing backgrounds and reviewin
                     </div>
                 </div>
                 <p className="py-4 text-center border-t mt-6 border-slate-200">
-                    Copyright 2026 © Jd.AI All Right Reserved.<br></br>
+                    Copyright 2026 © GenStudio.ai All Right Reserved.<br></br>
                 </p>
                  <p className="text-[12px] text-gray-400 mb-[2px] text-center">Developed By Jaydeep Rathod</p>
             </footer>

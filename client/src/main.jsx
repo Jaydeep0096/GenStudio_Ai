@@ -12,7 +12,15 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById('root')).render(
-  <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+  <ClerkProvider appearance={{
+    variables: {
+      colorPrimary: "#4f46e5",
+      colorBackground: "white",
+      colorText: "#4f46e5",
+      colorInputBackground: "#1f2937",
+      colorInputText: "#ffffff",
+    }
+  }} publishableKey={PUBLISHABLE_KEY}>
     <BrowserRouter>
       <App />
     </BrowserRouter>

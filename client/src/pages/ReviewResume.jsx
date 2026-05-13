@@ -1,13 +1,46 @@
 import React, { useState } from 'react'
 import {FileText, Sparkle} from 'lucide-react'
+import axios from 'axios'
+import toast from 'react-hot-toast';
+import { useAuth } from "@clerk/react";
+import Markdown from "react-markdown";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const ReviewResume = () => {
 
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [content, setContent] = useState();
+    
+  const {getToken} = useAuth();
 
    const submitHandler = async(e) =>{
     e.preventDefault();
-    // console.log(publish);
+    try {
+      setLoading(true);
+
+       const formData = new FormData();
+       formData.append('resume', input);
+       
+      const {data} = await axios.post("/api/ai/review-resume", formData , 
+        {
+          headers: {Authorization: `Bearer ${await getToken()}`}
+        }
+      ); 
+
+      if(data.success){
+        setContent(data.content);
+      }else{
+        toast.error(data.message)
+
+      }
+    } catch (error) {
+      //  toast.error(error.message)
+        console.log("BACKEND ERROR:", error.response?.data);
+  toast.error(error.response?.data?.message || error.message);
+    }
+    setLoading(false);
   }
 
   return (
@@ -21,8 +54,8 @@ const ReviewResume = () => {
 
         <p className='mt-6 text-sm font-medium'>Upload Resume</p>
         <input
-          onChange={(e)=>setInput(e.target.file[0])}
-          value={input}
+          onChange={(e)=>setInput(e.target.files[0])}
+          // value={input}
           type="file"
           accept="application/pdf"
           className="block w-full text-sm text-gray-500 
@@ -41,8 +74,12 @@ const ReviewResume = () => {
           
           }
         </div>
-        <button className='w-full flex justify-center items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 transition-all duration-200 text-white px-4 py-2 mt-6 text-sm rounded-lg shadow-md hover:shadow-lg'>
-          <FileText className='w-10' />
+        <button disabled={loading} className='w-full flex justify-center items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 transition-all duration-200 text-white px-4 py-2 mt-6 text-sm rounded-lg shadow-md hover:shadow-lg'>
+          
+           {
+            loading ? <span className="w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin"></span>
+            : <FileText className='w-10' />
+          }
           Review Resume
         </button>
         
@@ -57,13 +94,22 @@ const ReviewResume = () => {
               <h1 className='text-xl font-semibold'>Analysis Results</h1>
             </div>
 
+          {!content ? (
             <div className='flex-1 flex justify-center items-center'>
               <div className='text-sm flex flex-col items-center gap-5 text-gray-400'>
                 <FileText className='w-9 h-9' />
                 <p>Upload a resume and click “Review Resume" to get started</p>
               </div>
             </div>
-
+          ) : (
+            <div className='mt-3 h-full overflow-y-scroll text-sm text-slate-600'>
+                  <div className='reset-tw'>
+                    <Markdown>
+                      {content}
+                    </Markdown>
+                  </div>
+              </div>
+          )}
           </div>
         <div>
       </div>
